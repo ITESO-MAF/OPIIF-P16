@@ -5,7 +5,7 @@
 #### Primavera 2016.
 Empresa en la que se trabaja: Old Mutual México, Operadora de Fondos de Inversión. 
 
-- **Objetivo Principal PAP**: *Construcción de un sistema de información, procesamiento y optimización de datos financieros para incrementar el desempeño y eficiencia del fondo OM-RVMX*.
+- **Objetivo Principal**: *Construcción de un sistema de información, procesamiento y optimización de datos financieros para incrementar el desempeño y eficiencia del fondo OM-RVMX*.
 
   - **Objetivo Secundario 1**: *Generación de sistema de recolección de datos para descargar, almacenar y organizar información histórica (Precios, Estados Financieros, Información de la industria) de los activos financieros involucrados en el fondo OM-RVMX*.
 
