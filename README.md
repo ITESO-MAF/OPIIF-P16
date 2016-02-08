@@ -1,4 +1,4 @@
-## PAP: Programa de modelación matemática para el desarrollo de proyectos y planes de negocio 
+### PAP: Programa de modelación matemática para el desarrollo de proyectos y planes de negocio 
 ### Proyecto: *Optimización de Programas de Inversión en Intermediarios Financieros*
 
 ---
