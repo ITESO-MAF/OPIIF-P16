@@ -3,7 +3,7 @@
 
 ---
 #### Primavera 2016.
-Empresa en la que se trabaja: Old Mutual México, Operadora de Fondos de Inversión. 
+Empresa en la que se trabaja: Operadora de Fondos de Inversión. 
 
 - **Objetivo Principal**: *Construcción de un sistema de información, procesamiento y optimización de datos financieros para incrementar el desempeño y eficiencia del fondo OM-RVMX*.
 
