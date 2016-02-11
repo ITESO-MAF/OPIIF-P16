@@ -37,7 +37,7 @@ getSymbols(Tickers, from="2014-01-01", to="2016-02-01")
 
 # -- -------------------------- Concatenar todos los precios y eliminar filas con NA -- #
 
-ClosePrices <- do.call(merge, lapply(Valores, function(x) Cl(get(x))))
+ClosePrices <- do.call(merge, lapply(Tickers, function(x) Cl(get(x))))
 TotalBMV <- na.omit(ClosePrices)
 
 # -- -------------------------------------------- Calcular rendimientos logaritmicos -- #
@@ -45,4 +45,4 @@ TotalBMV <- na.omit(ClosePrices)
 Rendimientos <- round(Return.calculate(TotalBMV, method = "discrete")[-1],4)
 Rendimientos <- Rendimientos[complete.cases(Rendimientos)]
 
-rm(list = Valores)  # Eliminar de memoria objetos con precios individuales
+rm(list = Tickers)  # Eliminar de memoria objetos con precios individuales
