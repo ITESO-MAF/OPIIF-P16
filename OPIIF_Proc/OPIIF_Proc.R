@@ -38,15 +38,3 @@ return(EstadMens)
 Resultado <- EstadMens(DataEnt=DfRendimientos, YearNumber=2, MonthNumber=2)
 
 # ---------------------------------------------------------- N Aleatorios Markowitz -- #
-
-aleatorios <- 20000
-
-x_a  <- signif(runif(aleatorios, min = 0, max = 1),2)
-x_b  <- signif(runif(aleatorios, min = 0, max = 1),2)
-x_c  <- signif(runif(aleatorios, min = 0, max = 1),2)
-
-fact <- 1/(x_a+x_b+x_c)
-x_a  <- x_a*fact*100
-x_b  <- x_b*fact*100
-x_c  <- x_c*fact*100
-
