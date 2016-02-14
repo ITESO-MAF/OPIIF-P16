@@ -42,7 +42,9 @@ TotalBMV <- na.omit(ClosePrices)
 
 # -- -------------------------------------------- Calcular rendimientos logaritmicos -- #
 
-Rendimientos <- round(Return.calculate(TotalBMV, method = "discrete")[-1],4)
+Rendimientos <- Return.calculate(TotalBMV, method = "log")
 Rendimientos <- Rendimientos[complete.cases(Rendimientos)]
+DfRendimientos <- fortify.zoo(Rendimientos)
+DfRendimientos$Index <- as.POSIXct(DfRendimientos$Index, origin = "1970-01-01")
 
 rm(list = Tickers)  # Eliminar de memoria objetos con precios individuales
