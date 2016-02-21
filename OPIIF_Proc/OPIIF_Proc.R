@@ -1,11 +1,13 @@
 
-# ------------------------------------------------------------------------------------ #
-# -- Initial Developer: FranciscoME ----------------------------------------------- -- #
-# -- Code: MachineTradeR Main Control --------------------------------------------- -- #
-# -- License: MIT ----------------------------------------------------------------- -- #
-# ------------------------------------------------------------------------------------ #
+# -- ------------------------------------------------------------------------------- -- #
+# -- Contexto: Proyecto de Aplicacion Profesional ---------------------------------- -- #
+# -- Proyecto: Optimizacion de Programas de Inversion en Intermediarios Financieros  -- #
+# -- Periodo: Primavera 2016 ------------------------------------------------------- -- #
+# -- Codigo: Funciones de Procesamiento de Datos ----------------------------------- -- #
+# -- Licencia: MIT ----------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
 
-# -------------------------------------------------- Matriz Mensual de Estadisticas -- #
+# --------------------------------------------------- Matriz Mensual de Estadisticas -- #
 
 EstadMens <- function(DataEnt,YearNumber, MonthNumber)  {
 
@@ -35,6 +37,8 @@ EstadMens <- function(DataEnt,YearNumber, MonthNumber)  {
 return(EstadMens)
 }
 
-Resultado <- EstadMens(DataEnt=DfRendimientos, YearNumber=2, MonthNumber=2)
+# Prueba
+# Resultado <- EstadMens(DataEnt=DfRendimientos, YearNumber=2, MonthNumber=2)
 
-# ---------------------------------------------------------- N Aleatorios Markowitz -- #
+NumAle <- 20
+X2 <- runif(NumAle)/sum(runif(NumAle))
