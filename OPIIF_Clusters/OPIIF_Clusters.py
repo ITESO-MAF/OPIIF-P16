@@ -173,7 +173,8 @@ plt.show();
 
 # -- Ejecucion de modelo -- #
 
-prediction, model, data = cluster_data(clustering_data, n_clusters=8, normalize_data=True)
+prediction, model, data = cluster_data(clustering_data, n_clusters=13,
+                                       normalize_data=True)
 print "Cluster Count: %s" % len(np.unique(prediction))
 clustering_data["Cluster"] = prediction
 

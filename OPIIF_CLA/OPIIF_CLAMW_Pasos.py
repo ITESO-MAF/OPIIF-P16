@@ -1,18 +1,18 @@
 
-# -- ------------------------------------------------------------------------------ -- #
-# -- Funciones de Google Finance API ---------------------------------------------- -- #
-# -- Desarrollador Inicial: IF Francisco ME --------------------------------------- -- #
-# -- Licencia: MIT ---------------------------------------------------------------- -- #
-# -- ------------------------------------------------------------------------------ -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- Funciones de Google Finance API ----------------------------------------------- -- #
+# -- Desarrollador Inicial: IF Francisco ME ---------------------------------------- -- #
+# -- Licencia: MIT ----------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
 
-import numpy as np
+# -- Clase: CLA
 
-# -- ------------------------------------------------------------------------------ -- #
-# -- ------------------------------------------------------------------------------ -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- Initialize the class ---------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def __init__(self, mean, covar, lB, uB):
 
-class CLA:
-    def __init__(self, mean, covar, lB, uB):
-        # Initialize the class
+def __init__(self, mean, covar, lB, uB):
         if (mean == np.ones(mean.shape) * mean.mean()).all(): mean[-1, 0] += 1e-5
         self.mean = mean
         self.covar = covar
@@ -23,9 +23,12 @@ class CLA:
         self.g = []  # gammas
         self.f = []  # free weights
 
-    # ---------------------------------------------------------------
-    def solve(self):
-        # Compute the turning points,free sets and weights
+# -- ------------------------------------------------------------------------------- -- #
+# -- Compute the turning points,free sets and weights ------------------------------ -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def solve(self)
+
+def solve(self):
         f, w = self.initAlgo()
         self.w.append(np.copy(w))  # store solution
         self.l.append(None)
@@ -83,9 +86,12 @@ class CLA:
         self.purgeNumErr(10e-10)
         self.purgeExcess()
 
-    # ---------------------------------------------------------------
-    def initAlgo(self):
-        # Initialize the algo
+# -- ------------------------------------------------------------------------------- -- #
+# -- Initialize the algo ----------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def initAlgo(self)
+
+def initAlgo(self):
         # 1) Form structured array
         a = np.zeros((self.mean.shape[0]), dtype=[('id', int), ('mu', float)])
         b = [self.mean[i][0] for i in range(self.mean.shape[0])]  # dump array into list
@@ -100,17 +106,24 @@ class CLA:
         w[b[i][0]] += 1 - sum(w)
         return [b[i][0]], w
 
-    # ---------------------------------------------------------------
-    def computeBi(self, c, bi):
+# -- ------------------------------------------------------------------------------- -- #
+# -- 1) compute Bi ----------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def computeBi(self, c, bi)
+
+def computeBi(self, c, bi):
         if c > 0:
             bi = bi[1][0]
         if c < 0:
             bi = bi[0][0]
         return bi
 
-    # ---------------------------------------------------------------
-    def computeW(self, covarF_inv, covarFB, meanF, wB):
-        # 1) compute gamma
+# -- ------------------------------------------------------------------------------- -- #
+# -- 1) compute gamma -------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def computeW(self, covarF_inv, covarFB, meanF, wB)
+
+def computeW(self, covarF_inv, covarFB, meanF, wB):
         onesF = np.ones(meanF.shape)
         g1 = np.dot(np.dot(onesF.T, covarF_inv), meanF)
         g2 = np.dot(np.dot(onesF.T, covarF_inv), onesF)
@@ -128,8 +141,12 @@ class CLA:
         w3 = np.dot(covarF_inv, meanF)
         return -w1 + g * w2 + self.l[-1] * w3, g
 
-    # ---------------------------------------------------------------
-    def computeLambda(self, covarF_inv, covarFB, meanF, wB, i, bi):
+# -- ------------------------------------------------------------------------------- -- #
+# -- 1) compute lamda -------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def computeLambda(self, covarF_inv, covarFB, meanF, wB, i, bi)
+
+def computeLambda(self, covarF_inv, covarFB, meanF, wB, i, bi):
         # 1) C
         onesF = np.ones(meanF.shape)
         c1 = np.dot(np.dot(onesF.T, covarF_inv), onesF)
@@ -151,10 +168,13 @@ class CLA:
             l3 = np.dot(l2, wB)
             l2 = np.dot(onesF.T, l3)
             return float(((1 - l1 + l2) * c4[i] - c1 * (bi + l3[i])) / c), bi
-        # ---------------------------------------------------------------
 
-    def getMatrices(self, f):
-        # Slice covarF,covarFB,covarB,meanF,meanB,wF,wB
+# -- ------------------------------------------------------------------------------- -- #
+# -- Slice covarF,covarFB,covarB,meanF,meanB,wF,wB --------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def getMatrices(self, f)
+
+def getMatrices(self, f):
         covarF = self.reduceMatrix(self.covar, f, f)
         meanF = self.reduceMatrix(self.mean, f, [0])
         b = self.getB(f)
@@ -162,17 +182,26 @@ class CLA:
         wB = self.reduceMatrix(self.w[-1], b, [0])
         return covarF, covarFB, meanF, wB
 
-    # ---------------------------------------------------------------
-    def getB(self, f):
+# -- ------------------------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def getB(self, f)
+
+def getB(self, f):
         return self.diffLists(range(self.mean.shape[0]), f)
 
-    # ---------------------------------------------------------------
-    def diffLists(self, list1, list2):
+# -- ------------------------------------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def diffLists(self, list1, list2)
+
+def diffLists(self, list1, list2):
         return list(set(list1) - set(list2))
 
-    # ---------------------------------------------------------------
-    def reduceMatrix(self, matrix, listX, listY):
-        # Reduce a matrix to the provided list of rows and columns
+# -- ------------------------------------------------------------------------------- -- #
+# -- Reduce a matrix to the provided list of rows and columns ---------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def reduceMatrix(self, matrix, listX, listY)
+
+def reduceMatrix(self, matrix, listX, listY):
         if len(listX) == 0 or len(listY) == 0: return
         matrix_ = matrix[:, listY[0]:listY[0] + 1]
         for i in listY[1:]:
@@ -184,9 +213,12 @@ class CLA:
             matrix__ = np.append(matrix__, a, 0)
         return matrix__
 
-    # ---------------------------------------------------------------
-    def purgeNumErr(self, tol):
-        # Purge violations of inequality constraints (associated with ill-conditioned covar matrix)
+# -- ------------------------------------------------------------------------------- -- #
+# -- violations of inequality constraints (ill-conditioned cov matrix) ------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def purgeNumErr(self, tol)
+
+def purgeNumErr(self, tol):
         i = 0
         while True:
             flag = False
@@ -208,9 +240,12 @@ class CLA:
                 i += 1
         return
 
-    # ---------------------------------------------------------------
-    def purgeExcess(self):
-        # Remove violations of the convex hull
+# -- ------------------------------------------------------------------------------- -- #
+# -- Remove violations of the convex hull ------------------------------------------ -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def purgeExcess(self)
+
+def purgeExcess(self):
         i, repeat = 0, False
         while True:
             if repeat == False: i += 1
@@ -233,18 +268,24 @@ class CLA:
                     j += 1
         return
 
-    # ---------------------------------------------------------------
-    def getMinVar(self):
-        # Get the minimum variance solution
+# -- ------------------------------------------------------------------------------- -- #
+# -- Get the minimum variance solution --------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def getMinVar(self)
+
+def getMinVar(self):
         var = []
         for w in self.w:
             a = np.dot(np.dot(w.T, self.covar), w)
             var.append(a)
         return min(var) ** .5, self.w[var.index(min(var))]
 
-    # ---------------------------------------------------------------
-    def getMaxSR(self):
-        # Get the max Sharpe ratio portfolio
+# -- ------------------------------------------------------------------------------- -- #
+# -- Get the max Sharpe ratio portfolio -------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def getMaxSR(self)
+
+def getMaxSR(self):
         # 1) Compute the local max SR portfolio between any two neighbor turning points
         w_sr, sr = [], []
         for i in range(len(self.w) - 1):
@@ -256,17 +297,23 @@ class CLA:
             sr.append(b)
         return max(sr), w_sr[sr.index(max(sr))]
 
-    # ---------------------------------------------------------------
-    def evalSR(self, a, w0, w1):
-        # Evaluate SR of the portfolio within the convex combination
+# -- ------------------------------------------------------------------------------- -- #
+# -- Evaluate SR of the portfolio within the convex combination -------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def evalSR(self, a, w0, w1)
+
+def evalSR(self, a, w0, w1):
         w = a * w0 + (1 - a) * w1
         b = np.dot(w.T, self.mean)[0, 0]
         c = np.dot(np.dot(w.T, self.covar), w)[0, 0] ** .5
         return b / c
 
-    # ---------------------------------------------------------------
-    def goldenSection(self, obj, a, b, **kargs):
-        # Golden section method. Maximum if kargs['minimum']==False is passed
+# -- ------------------------------------------------------------------------------- -- #
+# -- Golden section method. Maximum if kargs['minimum']==False is passed ----------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def goldenSection(self, obj, a, b, **kargs)
+
+def goldenSection(self, obj, a, b, **kargs):
         from math import log, ceil
         tol, sign, args = 1.0e-9, 1, None
         if 'minimum' in kargs and kargs['minimum'] == False: sign = -1
@@ -298,9 +345,12 @@ class CLA:
         else:
             return x2, sign * f2
 
-    # ---------------------------------------------------------------
-    def efFrontier(self, points):
-        # Get the efficient frontier
+# -- ------------------------------------------------------------------------------- -- #
+# -- Get the efficient frontier ---------------------------------------------------- -- #
+# -- ------------------------------------------------------------------------------- -- #
+# -- def efFrontier(self, points)
+
+def efFrontier(self, points):
         mu, sigma, weights = [], [], []
         a = np.linspace(0, 1, points / len(self.w))[
             :-1]  # remove the 1, to avoid duplications
@@ -315,5 +365,27 @@ class CLA:
                 mu.append(np.dot(w.T, self.mean)[0, 0])
                 sigma.append(np.dot(np.dot(w.T, self.covar), w)[0, 0] ** .5)
         return mu, sigma, weights
-        # ---------------------------------------------------------------
-        # ---------------------------------------------------------------
+
+import matplotlib.pyplot as mpl
+import numpy as np
+import urllib2
+import os
+import sys
+
+# -- Descargar archivo.txt de la pagina de internet -------------------------------- -- #
+
+args = sys.argv[1:]
+url  = "http://www.quantresearch.info/CLA_Data.csv.txt"
+open("data.csv", "w").write(urllib2.urlopen(url).read())
+path = "/home/franciscome/Documents/IngenieriaFinanciera/GitHub/OPIIF/OPIIF_CLA/data.csv"
+headers = open(path,'r').readline().split(',')[:-1]
+data = np.genfromtxt(path, delimiter=',', skip_header=1)
+
+# -- Estadisticas de datos de ejemplo ---------------------------------------------- -- #
+
+mean = np.array(data[:1]).T
+lB  = np.array(data[1:2]).T
+uB  = np.array(data[2:3]).T
+cov = np.array(data[3:])
+
+
