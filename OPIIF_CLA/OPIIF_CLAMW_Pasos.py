@@ -387,5 +387,3 @@ mean = np.array(data[:1]).T
 lB  = np.array(data[1:2]).T
 uB  = np.array(data[2:3]).T
 cov = np.array(data[3:])
-
-

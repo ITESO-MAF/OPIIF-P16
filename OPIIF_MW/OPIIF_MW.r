@@ -1,111 +1,131 @@
 
-# -- ------------------------------------------------------------------------------- -- #
-# -- Contexto: Proyecto de Aplicacion Profesional ---------------------------------- -- #
-# -- Proyecto: Optimizacion de Programas de Inversion en Intermediarios Financieros  -- #
-# -- Periodo: Primavera 2016 ------------------------------------------------------- -- #
-# -- Codigo: Colector de Datos ----------------------------------------------------- -- #
-# -- Licencia: MIT ----------------------------------------------------------------- -- #
-# -- Desarrolladores: Daniel, Juan Pablo, FranciscoME ------------------------------ -- #
-
-# -- ---------------------------------------------------------------- Inicializacion -- #
+# -- -------------------------------------------------- ---------------------------- -- #
+# -- Codigo: PAP Optimizacion de Programas de Inversion ---------------------------- -- #
+# -- Fecha Ult Modificacion: 7.Marzo.2016               ---------------------------- -- #
+# -- GitHub: ------------------------------------------ ---------------------------- -- #
+# -- -------------------------------------------------- ---------------------------- -- #
 
 rm(list=ls())         # Remover objetos del environment
 cat("\014")           # Limpiar la Consola
 
-Pkg <- c("base","fBasics","grid","httr","lubridate","PerformanceAnalytics",
-         "PortfolioAnalytics","quantmod","xts","zoo","pso")
+Pkg <- c("base","fBasics","fPortfolio","grid","httr","lubridate","PerformanceAnalytics",
+         "quantmod","xts","zoo","quadprog","quantmod","ggplot2","timeDate")
 
 inst <- Pkg %in% installed.packages()
 if(length(Pkg[!inst]) > 0) install.packages(Pkg[!inst])
 instpackages <- lapply(Pkg, library, character.only=TRUE)
 
-# -- --------------------------------------------- Opciones Genericas para el Codigo -- #
+# -- ---------------------------------------------------------- Obtencion de precios -- #
 
-options("scipen"=1000,"getSymbols.warning4.0"=FALSE,concordance=TRUE)
-Sys.setlocale(category = "LC_ALL", locale = "")
-
-# -- ------------------------------------- Peticion de descarga de precios de cierre -- #
-
-Acciones <- c("ALFA.A","ALPEK.A","ALSEA","AMX.L","ASUR.B","BIMBO.A",
-             "BOLSA.A","CEMEX.CPO","COMERCI.UBC","ELEKTRA","GAP.B",
-             "GENTERA","GFINBUR.O","GFNORTE.O","GFREGIO.O","GMEXICO.B",
-             "GRUMA.B","GSANBOR.B-1","ICA","ICH.B","IENOVA","KIMBER.A",
-             "KOFL","LAB.B","LALA.B","LIVEPOL.C-1","MEXCHEM","OHLMEX",
-             "PINFRA","SANMEX.B","TLEVISA.CPO","WALMEX")
-
-Tickers <- c("ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIMBOA.MX",
+activos <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIMBOA.MX",
              "BOLSAA.MX","CEMEXCPO.MX","COMERCIUBC.MX","ELEKTRA.MX","GAPB.MX",
              "GENTERA.MX","GFINBURO.MX","GFNORTEO.MX","GFREGIOO.MX","GMEXICOB.MX",
              "GRUMAB.MX","GSANBORB-1.MX","ICA.MX","ICHB.MX","IENOVA.MX","KIMBERA.MX",
              "KOFL.MX","LABB.MX","LALAB.MX","LIVEPOLC-1.MX","MEXCHEM.MX","OHLMEX.MX",
              "PINFRA.MX","SANMEXB.MX","TLEVISACPO.MX","WALMEX.MX")
+getSymbols.yahoo(Symbols = activos,env=.GlobalEnv,from="2014-01-01",to="2016-02-08")
 
-getSymbols(Tickers, from="2014-01-01", to="2016-02-01")
+# -- --------------------------------------- matriz de activos con precios de cierre -- #
 
-# -- -------------------------- Concatenar todos los precios y eliminar filas con NA -- #
+Precios <- do.call(merge, lapply(activos, function(x) Cl(get(x))))
+Precios <- na.omit(Precios)
+rm(list = activos)  # Eliminar de memoria objetos con precios individuales
 
-XtsActiPrec <- do.call(merge, lapply(Tickers, function(x) Ad(get(x))))
-XtsActiPrec <- na.omit(XtsActiPrec)
-DFActiPrec  <- fortify.zoo(XtsActiPrec)
+# -- ------------------------------------------- Rendimientos Logaritmicos --------- -- #
 
-# -- -------------------------------------------- Calcular rendimientos logaritmicos -- #
+RendsLn <- diff(log(Precios))
+RendsLn <- na.omit(RendsLn)
+colnames(RendsLn) <- c("Rend.AC","Rend.ALFAA","Rend.ALPEKA","Rend.ALSEA","Rend.AMXL",
+                       "Rend.ASURB","Rend.BIMBOA","Rend.BOLSAA","Rend.CEMEXCPO",
+                       "Rend.COMERCIUBC","Rend.ELEKTRA","Rend.GAPB","Rend.GENTERA",
+                       "Rend.GFINBURO","Rend.GFNORTEO","Rend.GFREGIOO","Rend.GMEXICOB",
+                       "Rend.GRUMAB","Rend.GSANBORB1","Rend.ICA","Rend.ICHB",
+                       "Rend.IENOVA","Rend.KIMBERA","Rend.KOFL","Rend.LABB",
+                       "Rend.LALAB","Rend.LIVEPOLC1","Rend.MEXCHEM","Rend.OHLMEX",
+                       "Rend.PINFRA","Rend.SANMEXB","Rend.TLEVISACPO","Rend.WALMEX")
 
-XtsActiRend <- round(Return.calculate(XtsActiPrec, method = "log")[-1],4)
-XtsActiRend <- XtsActiRend[complete.cases(XtsActiRend)]
-DFActiRend  <- fortify.zoo(XtsActiRend)
+df.RendsLn  <- fortify.zoo(RendsLn)
+NRends <- length(colnames(RendsLn))
+NObs   <- length(df.RendsLn[,1])
 
-rm(list = Tickers)  # Eliminar de memoria objetos con precios individuales
-
-# -- ----------------------------------------------------------- Ventanas de tiempo  -- #
+# -- ---------------------------------------------- Estadisticas Mensuales --------- -- #
 
 EstadMens <- function(DataEnt,YearNumber, MonthNumber)  {
+  
   DfRends <- DataEnt
   NumActivos <- length(DfRends[1,])-1
   Years   <- unique(year(DfRends$Index))
   Months  <- unique(month(DfRends$Index))
   EstadMens  <- data.frame(matrix(ncol = NumActivos+1, nrow = 5))
-  row.names(EstadMens) <- c("Media","Varianza","DesvEst","Sesgo","Kurtosis")
+  row.names(EstadMens) <- c("Media ","Varianza ","DesvEst ","Sesgo ","curtosis ")
   
-  NvosDatos <- DfRends[which(year(DfRends$Index) == Years[YearNumber]),]
-  NvosDatos <- NvosDatos[which(month(NvosDatos$Index) == Months[MonthNumber]),]
+  NvDat <- DfRends[which(year(DfRends$Index) == Years[YearNumber]),]
+  NvDat <- NvDat[which(month(NvDat$Index) == Months[MonthNumber]),]
   colnames(EstadMens)[1] <- "Fecha"
-  EstadMens$Fecha <- NvosDatos$Index[length(NvosDatos$Index)]
+  EstadMens$Fecha <- NvDat$Index[length(NvDat$Index)]
+  Long <- length(EstadMens[1,])
   
-  EstadMens[1,2:length(EstadMens[1,])] <- round(apply(NvosDatos[,2:length(NvosDatos[1,])],
-                                                      MARGIN=2,FUN=mean),4)
-  EstadMens[2,2:length(EstadMens[1,])] <- round(apply(NvosDatos[,2:length(NvosDatos[1,])],
-                                                      MARGIN=2,FUN=var),4)
-  EstadMens[3,2:length(EstadMens[1,])] <- round(apply(NvosDatos[,2:length(NvosDatos[1,])],
-                                                      MARGIN=2,FUN=sd),4)
-  EstadMens[4,2:length(EstadMens[1,])] <- round(apply(NvosDatos[,2:length(NvosDatos[1,])],
-                                                      MARGIN=2,FUN=skewness),4)
-  EstadMens[5,2:length(EstadMens[1,])] <- round(apply(NvosDatos[,2:length(NvosDatos[1,])],
-                                                      MARGIN=2,FUN=kurtosis),4)
-  colnames(EstadMens)[2:length(EstadMens[1,])] <- colnames(DfRends[2:(NumActivos+1)])
+  EstadMens[1,2:Long] <- round(apply(NvDat[,2:length(NvDat[1,])],MARGIN=2,FUN=mean),4)
+  EstadMens[2,2:Long] <- round(apply(NvDat[,2:length(NvDat[1,])],MARGIN=2,FUN=var),4)
+  EstadMens[3,2:Long] <- round(apply(NvDat[,2:length(NvDat[1,])],MARGIN=2,FUN=sd),4)
+  EstadMens[4,2:Long] <- round(apply(NvDat[,2:length(NvDat[1,])],MARGIN=2,FUN=skewness),4)
+  EstadMens[5,2:Long] <- round(apply(NvDat[,2:length(NvDat[1,])],MARGIN=2,FUN=kurtosis),4)
+  colnames(EstadMens)[2:Long] <- colnames(DfRends[2:(NumActivos+1)])
   return(EstadMens)
 }
 
-# -- ----------------------------------------------------------- Ventanas de tiempo  -- #
-
-DFMedidas <- EstadMens(DataEnt=DFActiRend, YearNumber=3, MonthNumber=1)
+df.EstadMens <- EstadMens(DataEnt=df.RendsLn, YearNumber=3, MonthNumber=1)
 
 for(c in 2:1)  {
   for(n in 12:1)  {
-    Resultado <- EstadMens(DataEnt=DFActiRend, YearNumber=c, MonthNumber=n)
-    DFMedidas <- rbind(DFMedidas,Resultado)
-  }
-}
+    df.EstadMens <-rbind(df.EstadMens,
+                         EstadMens(DataEnt=df.RendsLn, YearNumber=c, MonthNumber=n) ) }  }
 
-rm(list = "Resultado") # Eliminar de la memoria objeto Resultado
+row.names(df.EstadMens)[1:5] <- c("Media 0","Varianza 0","DesvEst 0","Sesgo 0","Curtosis 0")
 
-# -- -------------------------------------------------------------- Portafolio Unico -- #
+# -- -----------------------------  Funcion para Estimar Portafolio Eficiente ----- -- #
 
-NActiv <- as.numeric(length(Tickers))
-NPesos <- 1000
-VMus <- apply(DFActiRend[,2:NActiv+1], 2, mean)
-MCov <- cov(DFActiRend[,2:NActiv+1],DFActiRend[,2:NActiv+1])
+# -- 4 restricciones -- #
 
-# -- -------------------------------------------------------------- Portafolio Unico -- #
+# -- Restricciones de Igualdad -- #
+# -- (R1) Totalidad del capital invertido: Suma de los pesos debe de ser 1
+# -- (R2) Rendimiento de portafolio objetivo: Rendimiento igual a 5.5% Anual
+
+# -- Restricciones de Desigualdad -- #
+# -- (R3) Participacion minima por activo: Todos los pesos deben de ser mayores a 2%
+# -- (R4) Participacion maxima por activo: Todos los pesos deben de ser menores a 12%
+
+NRends <- 4
+RendE <- df.EstadMens[46,2:NRends] # Matriz Nx1 rendimientos esperados de activos
+CovE  <- cov(RendsLn[325:346,2:NRends]) # Matriz NxN Covarianzas entre rendimientos
+
+Obj.RendEsp <- 0.005
+limit.l <- 0.01
+limit.u <- 0.5
+
+Dmat <- CovE  # Matriz de Covarianzas
+dvec <- t(RendE) # Matriz de Valores esperados
+
+A.Equality <- matrix(c(1,1,1), ncol=1)
+Amat <- cbind(A.Equality, dvec, diag(3), -diag(3))
+bvec <- c(1, 0.0020, rep(.01, 3), rep(-0.5, 3))
+qp <- solve.QP(Dmat, dvec, Amat, bvec, meq=2)
+qp$solution
+
+# -- ------------------------------------------------- Aleatorios para Grafica ----- -- #
+
+NPorts <- 1000
+df.Alea <- data.frame(matrix(runif(NRends*NPorts),NPorts,NRends))
+df.Alea <- df.Alea/rowSums(df.Alea)
+colnames(df.Alea)  <- activos
+for (i in 1:NPorts) row.names(df.Alea)[i] <- paste("p",i,sep= "")
+
+# -- --------------------------------------------- Generacion de variables --------- -- #
+
+df.EstadMens$Periodo.Mes <- as.numeric(format.Date(df.EstadMens$Fecha, format="%m"))
+df.EstadMens$Periodo.Ano <- as.numeric(format.Date(df.EstadMens$Fecha, format="%Y"))
+
+df.EstadMens <- df.EstadMens[,c("Fecha","Periodo.Mes","Periodo.Ano",c(colnames(RendsLn)))]
 
 chart.Boxplot(XtsActiRend, sort.by="variance", colorset = "black", sort.ascending=TRUE)
 rp1 <- random_portfolios(portfolio=pspec, permutations=10000, rp_method="sample")
