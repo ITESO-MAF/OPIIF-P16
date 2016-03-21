@@ -12,8 +12,8 @@
 rm(list=ls())         # Remover objetos del environment
 cat("\014")           # Limpiar la Consola
 
-Pkg <- c("base","fBasics","grid","httr","lubridate","PerformanceAnalytics",
-         "quantmod","xts","zoo")
+Pkg <- c("base","fBasics","dplyr","grid","googlesheets","httr","lubridate",
+         "PerformanceAnalytics","quantmod","xts","zoo")
 
 inst <- Pkg %in% installed.packages()
 if(length(Pkg[!inst]) > 0) install.packages(Pkg[!inst])
@@ -24,7 +24,9 @@ instpackages <- lapply(Pkg, library, character.only=TRUE)
 options("scipen"=1000,"getSymbols.warning4.0"=FALSE,concordance=TRUE)
 Sys.setlocale(category = "LC_ALL", locale = "")
 
+# -- ------------------------------------------------------------------------------- -- #
 # -- ------------------------------------- Peticion de descarga de precios de cierre -- #
+# -- ------------------------------------------------------------------------------- -- #
 
 Tickers <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIMBOA.MX",
              "BOLSAA.MX","CEMEXCPO.MX","COMERCIUBC.MX","ELEKTRA.MX","GAPB.MX",
@@ -48,3 +50,30 @@ DfRendimientos <- fortify.zoo(Rendimientos)
 DfRendimientos$Index <- as.POSIXct(DfRendimientos$Index, origin = "1970-01-01")
 
 rm(list = Tickers)  # Eliminar de memoria objetos con precios individuales
+
+# -- ------------------------------------------------------------------------------- -- #
+# -- ------------------- Leer una hoja de calculo publica almacenada en Google Drive -- #
+# -- --------------- Se utiliza el paquete googlesheets y algunas funciones de dplyr -- #
+# -- ------------------------------------------------------------------------------- -- #
+
+# -- Lista de hojas de calculo disponibles en google drive inicio, automaticamente
+# -- se pedirá la autenticación y permiso para acceder a google drive a traves de r
+gs_ls()
+
+# -- Buscar en el inicio una hoja de calculo llamada "Multiplos(OPIIF).xlsx"
+GSArchivo <- gs_title("Multiplos(OPIIF).xlsx")
+
+# -- Leer hoja de calculo y pagina en particular "GAPB"
+DatosGS <- gs_read(GSArchivo, ws = "GAPB")
+
+# -- Estructura de la hoja y pagina leidas, incluye clases de columnas
+str(DatosGS)
+
+# -- Primeros renglones de la hoja y pagina leidas, incluye clases de columnas
+head(DatosGS)
+
+# -- Descargar hoja y pagina seleccionadas a un archivo local
+gs_download(from = GSArchivo, to = "Prueba.csv", overwrite = TRUE)
+
+# -- Borrar de caché datos utilizados para inciiar desde 0
+gs_vecdel("GSMultiplos")

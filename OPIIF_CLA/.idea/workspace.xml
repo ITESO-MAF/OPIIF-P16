@@ -21,21 +21,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="OPIIF_CLAMW.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW.py">
+      <file leaf-file-name="OPIIF_CLAMW_Pasos.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-              <folding />
+              <caret line="462" column="48" selection-start-line="462" selection-start-column="48" selection-end-line="462" selection-end-column="48" />
+              <folding>
+                <element signature="e#451#482#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OPIIF_CLAMW_Prueba.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="OPIIF_CLAMW_Prueba.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+              <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding>
                 <element signature="e#447#456#0" expanded="true" />
               </folding>
@@ -57,8 +59,8 @@
       <list>
         <option value="$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py" />
         <option value="$PROJECT_DIR$/OPIIF_CLAMW.py" />
-        <option value="$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py" />
         <option value="$PROJECT_DIR$/OPIIF_CLAMW_Ind.py" />
+        <option value="$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py" />
       </list>
     </option>
   </component>
@@ -113,7 +115,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
@@ -135,6 +136,7 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -368,11 +370,23 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW.py">
+    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <caret line="462" column="48" selection-start-line="462" selection-start-column="48" selection-end-line="462" selection-end-column="48" />
+          <folding>
+            <element signature="e#451#482#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
+          <folding>
+            <element signature="e#447#456#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -386,11 +400,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW.py">
+    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#447#456#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -428,14 +444,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="298" column="32" selection-start-line="267" selection-start-column="4" selection-end-line="298" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -460,28 +468,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Ind.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7803618">
-          <caret line="75" column="56" selection-start-line="71" selection-start-column="0" selection-end-line="75" selection-end-column="56" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.31007752">
-          <caret line="342" column="19" selection-start-line="342" selection-start-column="19" selection-end-line="342" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/../OPIIF_Clusters/OPIIF_Clusters.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -492,12 +478,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Ind.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.9069767">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Prueba.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="6" column="0" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+          <caret line="23" column="31" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding>
             <element signature="e#447#456#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/OPIIF_CLAMW_Pasos.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="462" column="48" selection-start-line="462" selection-start-column="48" selection-end-line="462" selection-end-column="48" />
+          <folding>
+            <element signature="e#451#482#0" expanded="true" />
           </folding>
         </state>
       </provider>

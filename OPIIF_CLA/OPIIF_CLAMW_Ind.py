@@ -67,10 +67,3 @@ start_date  = finish_date - timedelta(days=150)
 Precios = download_data("ALFAA.MX", finish_date, start_date)
 PreciosCl =  ([Precios.TimeStamp, Precios.Close])
 
-import numpy as np
-
-n_assets = 4
-n_obs = 100
-return_vec = np.random.randn(n_assets, n_obs)
-p = np.asmatrix(np.mean(return_vec, axis=1))
-a=np.zeros((p.shape[0]),dtype=[('id',int),('mu',float)])

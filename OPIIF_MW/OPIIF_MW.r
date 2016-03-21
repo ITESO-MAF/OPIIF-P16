@@ -25,6 +25,14 @@ activos <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIM
              "PINFRA.MX","SANMEXB.MX","TLEVISACPO.MX","WALMEX.MX")
 getSymbols.yahoo(Symbols = activos,env=.GlobalEnv,from="2014-01-01",to="2016-02-08")
 
+
+activos <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIMBOA.MX",
+             "BOLSAA.MX","CEMEXCPO.MX","COMERCIUBC.MX","ELEKTRA.MX","GAPB.MX",
+             "GENTERA.MX","GFINBURO.MX","GFNORTEO.MX","GFREGIOO.MX","GMEXICOB.MX",
+             "GRUMAB.MX","GSANBORB-1.MX","ICA.MX","ICHB.MX","IENOVA.MX","KIMBERA.MX",
+             "KOFL.MX","LABB.MX","LALAB.MX","LIVEPOLC-1.MX","MEXCHEM.MX","OHLMEX.MX",
+             "PINFRA.MX","SANMEXB.MX","TLEVISACPO.MX","WALMEX.MX")
+
 # -- --------------------------------------- matriz de activos con precios de cierre -- #
 
 Precios <- do.call(merge, lapply(activos, function(x) Cl(get(x))))
@@ -103,7 +111,7 @@ Obj.RendEsp <- 0.005
 limit.l <- 0.01
 limit.u <- 0.5
 
-Dmat <- CovE  # Matriz de Covarianzas
+Dmat <- CovE     # Matriz de Covarianzas
 dvec <- t(RendE) # Matriz de Valores esperados
 
 A.Equality <- matrix(c(1,1,1), ncol=1)
