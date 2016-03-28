@@ -169,5 +169,3 @@ chart.Boxplot(XtsActiRend, sort.by="variance", colorset = "black", sort.ascendin
 rp1 <- random_portfolios(portfolio=pspec, permutations=10000, rp_method="sample")
 tmp1.mean   <- apply(rp1, 1, function(x) mean(XtsActiRend %*% x))
 tmp1.StdDev <- apply(rp1, 1, function(x) StdDev(R=XtsActiRend, weights=x))
-
-
