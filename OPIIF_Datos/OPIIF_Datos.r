@@ -59,6 +59,7 @@ rm(list = Tickers)  # Eliminar de memoria objetos con precios individuales
 # -- Lista de hojas de calculo disponibles en google drive inicio, automaticamente
 # -- se pedirá la autenticación y permiso para acceder a google drive a traves de r
 gs_ls()
+gs_copy(gs_gap(), to = "Multiplos(OPIIF).xlsx")
 
 # -- Buscar en el inicio una hoja de calculo llamada "Multiplos(OPIIF).xlsx"
 GSArchivo <- gs_title("Multiplos(OPIIF).xlsx")

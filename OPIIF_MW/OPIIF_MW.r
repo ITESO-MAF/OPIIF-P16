@@ -91,6 +91,23 @@ for(c in 2:1)  {
 
 row.names(df.EstadMens)[1:5] <- c("Media 0","Varianza 0","DesvEst 0","Sesgo 0","Curtosis 0")
 
+# -- ---------------------------------------------------------------  Check Point 1 -- #
+
+load("~/Documents/IngenieriaFinanciera/GitHub/OPIIF/OPIIF_Datos/CheckPoint1.RData")
+
+# -- -----------------------  Boxplots descriptivo individual de rendimientos ----- -- #
+
+NMedias <- seq(1,length(df.EstadMens[,1]),5)
+
+HMedias <- data.frame((df.EstadMens[NMedias,-1]))
+colnames(HMedias) <- seq(1,NRends,1)
+
+HRends  <- df.RendsLn[,2:c(NRends+1)]
+colnames(HRends) <- seq(1,NRends,1)
+
+boxplot(HMedias)
+boxplot(HRends)
+
 # -- -----------------------------  Funcion para Estimar Portafolio Eficiente ----- -- #
 
 # -- 4 restricciones -- #
@@ -100,12 +117,14 @@ row.names(df.EstadMens)[1:5] <- c("Media 0","Varianza 0","DesvEst 0","Sesgo 0","
 # -- (R2) Rendimiento de portafolio objetivo: Rendimiento igual a 5.5% Anual
 
 # -- Restricciones de Desigualdad -- #
-# -- (R3) Participacion minima por activo: Todos los pesos deben de ser mayores a 2%
-# -- (R4) Participacion maxima por activo: Todos los pesos deben de ser menores a 12%
+# -- (R3) Participacion minima por activo: Todos los pesos deben de ser mayores a 1%
+# -- (R4) Participacion maxima por activo: Todos los pesos deben de ser menores a 15%
 
-NRends <- 4
-RendE <- df.EstadMens[46,2:NRends] # Matriz Nx1 rendimientos esperados de activos
-CovE  <- cov(RendsLn[325:346,2:NRends]) # Matriz NxN Covarianzas entre rendimientos
+# -- Los valores siguientes se eligen segun la cantidad de datos historicos a utilizar #
+
+NRends <- 4 # Activos especificos a utilizar para ejemplo
+RendE  <- df.EstadMens[46,2:NRends] # Matriz Nx1 rendimientos esperados de activos
+CovE   <- cov(RendsLn[325:346,2:NRends]) # Matriz NxN Covarianzas entre rendimientos
 
 Obj.RendEsp <- 0.005
 limit.l <- 0.01
@@ -139,3 +158,5 @@ chart.Boxplot(XtsActiRend, sort.by="variance", colorset = "black", sort.ascendin
 rp1 <- random_portfolios(portfolio=pspec, permutations=10000, rp_method="sample")
 tmp1.mean   <- apply(rp1, 1, function(x) mean(XtsActiRend %*% x))
 tmp1.StdDev <- apply(rp1, 1, function(x) StdDev(R=XtsActiRend, weights=x))
+
+
