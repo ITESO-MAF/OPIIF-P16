@@ -108,6 +108,14 @@ colnames(HRends) <- seq(1,NRends,1)
 boxplot(HMedias)
 boxplot(HRends)
 
+# -- ------------------------------  Division de DataSet 1 >> Rends Ln Sin Atipicos -- #
+
+# Encontrar activos con rend que no tengan atipicos, "sin bolitas fuera del bigote"
+
+# -- --------------------------------  Division de DataSet 2 >> Medias Sin Atipicos -- #
+
+# Encontrar activos que no tengan atipicos en medias mens, "sin bolitas fuera del bigote"
+
 # -- -----------------------------  Funcion para Estimar Portafolio Eficiente ----- -- #
 
 # -- 4 restricciones -- #
@@ -121,6 +129,9 @@ boxplot(HRends)
 # -- (R4) Participacion maxima por activo: Todos los pesos deben de ser menores a 15%
 
 # -- Los valores siguientes se eligen segun la cantidad de datos historicos a utilizar #
+
+# -- Hacer el siguiente codigo para los 3 casos, Rends Originales, Rends sin atipicos,
+# -- Medias mensuales sin atipicos.
 
 NRends <- 4 # Activos especificos a utilizar para ejemplo
 RendE  <- df.EstadMens[46,2:NRends] # Matriz Nx1 rendimientos esperados de activos
