@@ -1,7 +1,7 @@
 
 # -- -------------------------------------------------- ---------------------------- -- #
 # -- Codigo: PAP Optimizacion de Programas de Inversion ---------------------------- -- #
-# -- Fecha Ult Modificacion: 28.Marzo.2016              ---------------------------- -- #
+# -- Fecha Ult Modificacion: 29.Marzo.2016              ---------------------------- -- #
 # -- GitHub: ------------------------------------------ ---------------------------- -- #
 # -- -------------------------------------------------- ---------------------------- -- #
 
@@ -21,7 +21,7 @@ instpackages <- lapply(Pkg, library, character.only=TRUE)
 FInicial <- "2014-01-01"
 FFinal   <- "2016-02-08"
 
-# -- ------------------------------------------------------------------------------ -- #
+# -- ----------------------------------------- Acomodo de todos los datos necesarios -- #
 
 # -- Tasa Libre de Riesgo (Cetes) ANUAL
 Rf <- Quandl("BDM/SF282", trim_start=FInicial, order = "asc")
@@ -50,3 +50,6 @@ Df.Datos  <- Df.Datos[,-1]
 Xts.Datos <- as.xts(Df.Datos, order.by = unique(IndexRf,IndexBm,IndexFd)[-1])
 
 rm(list = "MXX","OMRVMXA.MX","Bm","Fd","Rf","a")
+
+# -- En DF.Datos estan todos los datos necesarios. Tipo cuadro de datos
+# -- En Xts.Datos estan todos los datos necearios. Tipo serie de tiempo
