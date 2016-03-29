@@ -24,7 +24,7 @@ FFinal   <- "2016-02-08"
 # -- ------------------------------------------------------------------------------ -- #
 
 # -- Tasa Libre de Riesgo (Cetes) ANUAL
-Rf <- Quandl("BDM/SF282", trim_start=FInicial)
+Rf <- Quandl("BDM/SF282", trim_start=FInicial, order = "asc")
 colnames(Rf) <- c("Index","Rf")
 IndexRf <- Rf$Index
 Rf$Index <- format(Rf$Index, format="%b %Y")
@@ -46,8 +46,7 @@ Fd <- data.frame(Fd[-1,1], round(diff(log(Fd[,5])),4))
 colnames(Fd) <- c("Index","Fd")
 
 Df.Datos  <- join_all(list(Rf,Bm,Fd), by = 'Index', type = 'full')
+Df.Datos  <- Df.Datos[,-1]
+Xts.Datos <- as.xts(Df.Datos, order.by = unique(IndexRf,IndexBm,IndexFd)[-1])
 
-
-Xts.Datos <- as.xts(Df.Datos, order.by = (Df.Datos$Index))
-
-rm(list = "MXX", "OMRVMXA.MX","Bm","Fd","Rf")
+rm(list = "MXX","OMRVMXA.MX","Bm","Fd","Rf","a")
