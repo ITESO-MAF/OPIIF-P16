@@ -26,7 +26,7 @@ FFinal   <- "2016-02-08"
 # -- Tasa Libre de Riesgo (Cetes) ANUAL
 Rf <- Quandl("BDM/SF282", trim_start=FInicial, order = "asc")
 colnames(Rf) <- c("Index","Rf")
-IndexRf <- Rf$Index
+IndexRf  <- Rf$Index
 Rf$Index <- format(Rf$Index, format="%b %Y")
 Rf <- Rf[-1,]
 Rf[,2] <- round((Rf[,2]/25200)*28,4)

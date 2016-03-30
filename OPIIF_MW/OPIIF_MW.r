@@ -9,7 +9,7 @@ rm(list=ls())         # Remover objetos del environment
 cat("\014")           # Limpiar la Consola
 
 Pkg <- c("base","fBasics","fPortfolio","grid","httr","lubridate","PerformanceAnalytics",
-         "quantmod","xts","zoo","quadprog","quantmod","ggplot2","timeDate")
+         "quantmod","xts","zoo","quadprog","quantmod","ggplot2","timeDate", "reshape2")
 
 inst <- Pkg %in% installed.packages()
 if(length(Pkg[!inst]) > 0) install.packages(Pkg[!inst])
@@ -26,12 +26,12 @@ activos <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIM
 getSymbols.yahoo(Symbols = activos,env=.GlobalEnv,from="2014-01-01",to="2016-02-08")
 
 
-activos <- c("AC.MX","ALFAA.MX","ALPEKA.MX","ALSEA.MX","AMXL.MX","ASURB.MX","BIMBOA.MX",
-             "BOLSAA.MX","CEMEXCPO.MX","COMERCIUBC.MX","ELEKTRA.MX","GAPB.MX",
-             "GENTERA.MX","GFINBURO.MX","GFNORTEO.MX","GFREGIOO.MX","GMEXICOB.MX",
-             "GRUMAB.MX","GSANBORB-1.MX","ICA.MX","ICHB.MX","IENOVA.MX","KIMBERA.MX",
-             "KOFL.MX","LABB.MX","LALAB.MX","LIVEPOLC-1.MX","MEXCHEM.MX","OHLMEX.MX",
-             "PINFRA.MX","SANMEXB.MX","TLEVISACPO.MX","WALMEX.MX")
+Tickers <- c("AC","ALFA.A","ALPEK.A","ALSEA","AMX.L","ASUR.B","BIMBO.A",
+             "BOLSA.A","CEMEX.CPO","COMERCI.UBC","ELEKTRA","GAP.B",
+             "GENTERA","GFINBUR.O","GFNORTE.O","GFREGIO.O","GMEXICO.B",
+             "GRUMA.B","GSANBOR.B-1","ICA","ICH.B","IENOVA","KIMBER.A",
+             "KOFL","LAB.B","LALA.B","LIVEPOL.C-1","MEXCHEM","OHLMEX",
+             "PINFRA","SANMEX.B","TLEVISA.CPO","WALMEX")
 
 # -- --------------------------------------- matriz de activos con precios de cierre -- #
 
@@ -93,20 +93,16 @@ row.names(df.EstadMens)[1:5] <- c("Media 0","Varianza 0","DesvEst 0","Sesgo 0","
 
 # -- ---------------------------------------------------------------  Check Point 1 -- #
 
-load("~/Documents/IngenieriaFinanciera/GitHub/OPIIF/OPIIF_Datos/CheckPoint1.RData")
+#load("~/Documents/IngenieriaFinanciera/GitHub/OPIIF/OPIIF_Datos/CheckPoint1.RData")
 
 # -- -----------------------  Boxplots descriptivo individual de rendimientos ----- -- #
-
-NMedias <- seq(1,length(df.EstadMens[,1]),5)
-
-HMedias <- data.frame((df.EstadMens[NMedias,-1]))
-colnames(HMedias) <- seq(1,NRends,1)
 
 HRends  <- df.RendsLn[,2:c(NRends+1)]
 colnames(HRends) <- seq(1,NRends,1)
 
-boxplot(HMedias)
-boxplot(HRends)
+# -- ------------------------------------------------------------------------------ -- #
+# -- ---------------------------  Boxplots descriptivo Medias de rendimientos ----- -- #
+# -- ------------------------------------------------------------------------------ -- #
 
 # -- ------------------------------  Division de DataSet 1 >> Rends Ln Sin Atipicos -- #
 
